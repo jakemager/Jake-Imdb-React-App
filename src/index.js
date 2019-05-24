@@ -1,12 +1,33 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
+import { render } from 'react-dom';
+import { createGlobalStyle } from 'styled-components';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import rootReducer from './reducers';
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const store = createStore(
+	rootReducer,
+	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    padding: 0;
+    min-width: 320px;
+    font-family: sans-serif;
+    background: #C2C2BE;
+  }
+`;
+
+render(
+	<Provider store={store}>
+		<React.Fragment>
+			<GlobalStyle />
+			<App />
+		</React.Fragment>
+	</Provider>,
+	document.getElementById('root')
+);
